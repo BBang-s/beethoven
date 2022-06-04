@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.skcc.beethoven.mapper.TblUserMapper"> 
+	 
+<select id="getListUser" parameterType="hashmap" resultType="hashmap">
+	SELECT usr_id, usr_nm, cmp_nm
+	  FROM tbl_user
+	 ORDER BY cmp_nm, usr_id
+</select>
+
+<select id="getUser" parameterType="hashmap" resultType="hashmap">
+	SELECT usr_id, usr_nm, cmp_nm
+	  FROM tbl_user
+	 WHERE usr_id = #{usr_id}       
+</select>
+
+<insert id="addUser" parameterType="hashmap">
+INSERT INTO tbl_user (usr_id, usr_nm, cmp_nm, first_reg_id, first_reg_dtm, last_chg_id, last_chg_dtm) 
+	       VALUES (#{usr_id}, #{usr_nm}, #{cmp_nm}, #{usr_id}, NOW(), #{usr_id}, NOW())
+</insert>
+
+<update id="updUser" parameterType="hashmap">
+	 UPDATE tbl_user 
+		SET last_chg_id = #{usr_id}
+		  , last_chg_dtm = NOW()
+		<if test="usr_nm != null">
+		  , usr_nm = #{usr_nm}
+		</if>	
+		<if test="cmp_nm != null">
+		  , cmp_nm = #{cmp_nm}
+		</if>
+	  WHERE usr_id = #{usr_id}
+</update>
+ 
+ <delete id="delUser" parameterType="hashmap">
+	 DELETE FROM tbl_user	
+	  WHERE usr_id = #{usr_id}
+ </delete>
+
+</mapper>
